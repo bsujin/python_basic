@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<style>
+
+	table{
+		text-align: center;
+		padding: 0px;
+	}
+	
+	td{
+		padding : 5px;
+	}
+	
+</style>
+<body>
+<!-- for문 사용  -->
+<h1>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;주식 종목 </h1>
+<table border=1>
+<tr>
+	<td>code</td>
+	<td>회사명</td>
+	<td>가격</td>
+	<td>시간</td>
+</tr>
+{% for i in db_list %}
+<tr>
+	<td>{{ i.0 }}</td>
+	<td>{{ i.1 }}</td>
+	<td>{{ i.2 }}</td>
+	<td>{{ i.3 }}</td>
+</tr>
+{% endfor %}
+</table>
+
+</body>
+</html>

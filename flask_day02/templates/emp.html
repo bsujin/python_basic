@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<!-- <script type=text/javascript src="{{url_for('static', filename='jquery-3.5.1.js') }}"></script> -->
+<script type=text/javascript src="/static/jquery-3.5.1.js"></script>
+<script type="text/javascript">
+	
+		function upd(){
+			var emp_id = $("#emp_id").val();
+			var emp_nm = $("#emp_nm").val();
+			var nick_nm = $("#nick_nm").val();
+		$.ajax({ 
+			url : '/empUp.ajax', 
+			type : 'get', 
+			data : { emp_id: emp_id, emp_nm : emp_nm, nick_nm : nick_nm}, 
+			dataType : 'JSON',
+            success : function(data){
+//                       alert("수정되었습니다");
+		              var obj_json = JSON.parse(data); // 처리값을 가져오기 
+		              console.log(obj_json.cnt);
+		              if(obj_json.cnt==1){
+		            	  alert("정상적으로 수정되었습니다");
+		              	   location.reload();  //재호출 하기 방법1
+		              }else{
+// 		            	  alert("실행도중 문제가 생겼습니다.");
+		            	  alert("기존과 똑같습니다.");
+		              }
+              },
+              error : function(xtr,status,error){
+                      alert(xtr +":"+status+":"+error);
+              }
+      });
+	}
+	
+	function del(){
+		var emp_id = $("#emp_id").val();
+		$.ajax({ 
+			url : '/empDel.ajax', 
+			type : 'get', 
+			data : { emp_id: emp_id}, 
+			dataType : 'JSON',
+            success : function(data){
+                      alert("삭제되었습니다");
+                      var obj_json = JSON.parse(data); // 처리값을 가져오기 
+		              if(obj_json.cnt==1){
+		            	  alert("정상적으로 삭제되었습니다");
+		              	   location.reload();  //재호출 하기 방법1
+		              }else{
+		            	  alert("실행도중 문제가 생겼습니다.");
+		              }
+              },
+              error : function(xtr,status,error){
+                      alert(xtr +":"+status+":"+error);
+              }
+      });
+	}
+	
+	function ins(){
+		var emp_nm = $("#emp_nm").val();
+		var nick_nm = $("#nick_nm").val();
+		$.ajax({ 
+			url : '/empIns.ajax', 
+			type : 'get', 
+			data : { emp_nm : emp_nm, nick_nm : nick_nm}, 
+			dataType : 'JSON',
+            success : function(data){
+                      alert("추가되었습니다");
+                      var obj_json = JSON.parse(data); // 처리값을 가져오기 
+		              if(obj_json.cnt==1){
+		            	  alert("정상적으로 추가되었습니다");
+		              	   location.reload();  //재호출 하기 방법1
+		              }else{
+		            	  alert("실행도중 문제가 생겼습니다.");
+		              }		              
+              },
+              error : function(xtr,status,error){
+                      alert(xtr +":"+status+":"+error);
+              }
+      });
+	}
+	
+	/* function setEmp(emp_id, emp_nm, nick_nm){
+		alert("setEmp");
+		var obj_emp_id = document.getElementById("emp_id");
+		var obj_emp_nm = document.getElementById("emp_nm");
+		var obj_nick_nm = document.getElementById("nick_nm");
+		
+		obj_emp_id.value = emp_id;
+		obj_emp_nm.value = emp_nm;
+		obj_nick_nm.value = nick_nm;
+	} */
+	function setEmp(emp_id, emp_nm, nick_nm){
+		$("#emp_id").val(emp_id);
+		$("#emp_nm").val(emp_nm);
+		$("#nick_nm").val(nick_nm);
+	}
+
+</script>
+
+
+</head>
+<body>
+	EMP CRUD
+	<br>
+	<h1>EMP List</h1>
+	<table border="1">
+		<tr>
+			<td>회원 id</td>
+			<td>회원 이름</td>
+			<td>별칭</td>
+		</tr>
+		{% for i in db_list %}
+		<tr>
+			<td><a href="javascript:setEmp('{{i[0]}}','{{ i[1]}}','{{ i[2]}}')">
+			{{i[0]}}</a></td>
+			<td>{{ i[1]}}</td>
+			<td>{{ i[2]}}</td>
+		</tr>
+			
+		{% endfor %}
+	</table>
+	<br>
+	<br>
+	<hr>
+	<br>
+	<br>
+	<!-- <form action="empUp" method="get"> -->
+	<h1>수정, 삭제, 추가 하기</h1>
+
+	<table border="2">
+		<tr>
+			<td>회원 id</td>
+			<td><input type="text" id="emp_id">
+			<td>
+			<td>회원 이름</td>
+			<td><input type="text" id="emp_nm">
+			<td>
+			<td>별칭</td>
+			<td><input type="text" id="nick_nm">
+			<td>
+		</tr>
+	</table>
+	<br>
+	<br>
+	<!-- <a href="javascript:upd()">수정</a> -->
+	<!-- <a href="javascript:del()">삭제</a> -->
+	<!-- <a href="javascript:ins()">추가</a> -->
+	<input type="button" value="수정" onclick="upd()">
+	<input type="button" value="삭제" onclick="del()">
+	<input type="button" value="추가 " onclick="ins()">
+	<!-- </form> -->
+
+</body>
+</html>
